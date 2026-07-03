@@ -1,0 +1,118 @@
+[gd_scene format=3 uid="uid://ctwiy6ybikp7r"]
+
+[ext_resource type="PackedScene" uid="uid://3ypspvodxuyh" path="res://player/player.tscn" id="1_53q0u"]
+[ext_resource type="Script" uid="uid://kesqr0gbfe8o" path="res://main/grid.gd" id="1_pjrb6"]
+[ext_resource type="Script" uid="uid://c27kky8jcquci" path="res://main/main.gd" id="1_xwkvk"]
+[ext_resource type="Script" uid="uid://b2tyu5hkv4afc" path="res://main/task_handler.gd" id="3_c651c"]
+[ext_resource type="FontFile" uid="uid://dbhesa6x5wu1j" path="res://assets/fonts/m5x7.ttf" id="5_3wy1v"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_66q6m"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.96862745, 0.8117647, 1)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_66q6m"]
+normal = Vector2(1, 0)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_q4iom"]
+normal = Vector2(-1, 0)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_4hihk"]
+normal = Vector2(0, 1)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_53q0u"]
+
+[node name="Main" type="Node2D" unique_id=193899890]
+script = ExtResource("1_xwkvk")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1489437146]
+custom_minimum_size = Vector2(320, 320)
+custom_maximum_size = Vector2(320, 320)
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 288.0
+offset_bottom = 288.0
+color = Color(0.047058824, 0.011764706, 0.05882353, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1941495587]
+custom_minimum_size = Vector2(256, 256)
+custom_maximum_size = Vector2(256, 256)
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 7
+theme_override_constants/margin_top = 7
+theme_override_constants/margin_right = 7
+theme_override_constants/margin_bottom = 7
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer" unique_id=366160691]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_66q6m")
+
+[node name="Clip" type="Control" parent="MarginContainer/PanelContainer" unique_id=159446535]
+clip_contents = true
+layout_mode = 2
+
+[node name="World" type="Node2D" parent="MarginContainer/PanelContainer/Clip" unique_id=60600431]
+position = Vector2(-10, -10)
+
+[node name="Grid" type="Node2D" parent="MarginContainer/PanelContainer/Clip/World" unique_id=718200903]
+script = ExtResource("1_pjrb6")
+offset = Vector2i(9, 9)
+
+[node name="Walls" type="Node2D" parent="MarginContainer/PanelContainer/Clip/World" unique_id=362660554]
+
+[node name="WallL" type="StaticBody2D" parent="MarginContainer/PanelContainer/Clip/World/Walls" unique_id=130322810]
+position = Vector2(10, 128)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MarginContainer/PanelContainer/Clip/World/Walls/WallL" unique_id=1327049253]
+shape = SubResource("WorldBoundaryShape2D_66q6m")
+
+[node name="WallR" type="StaticBody2D" parent="MarginContainer/PanelContainer/Clip/World/Walls" unique_id=1764779011]
+position = Vector2(250, 128)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MarginContainer/PanelContainer/Clip/World/Walls/WallR" unique_id=1849439302]
+shape = SubResource("WorldBoundaryShape2D_q4iom")
+
+[node name="WallU" type="StaticBody2D" parent="MarginContainer/PanelContainer/Clip/World/Walls" unique_id=796133034]
+position = Vector2(128, 10)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MarginContainer/PanelContainer/Clip/World/Walls/WallU" unique_id=1219568519]
+shape = SubResource("WorldBoundaryShape2D_4hihk")
+
+[node name="WallD" type="StaticBody2D" parent="MarginContainer/PanelContainer/Clip/World/Walls" unique_id=316780417]
+position = Vector2(128, 250)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MarginContainer/PanelContainer/Clip/World/Walls/WallD" unique_id=1689221744]
+shape = SubResource("WorldBoundaryShape2D_53q0u")
+
+[node name="TaskHandler" type="Node2D" parent="MarginContainer/PanelContainer/Clip/World" unique_id=590767264]
+script = ExtResource("3_c651c")
+
+[node name="Player" parent="MarginContainer/PanelContainer/Clip/World" unique_id=522129304 instance=ExtResource("1_53q0u")]
+position = Vector2(129, 129)
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=2108685963]
+
+[node name="MarginContainer" type="MarginContainer" parent="UI" unique_id=191245642]
+custom_minimum_size = Vector2(256, 256)
+custom_maximum_size = Vector2(256, 256)
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="WaveCount" type="RichTextLabel" parent="UI/MarginContainer" unique_id=1404831565]
+clip_contents = false
+layout_mode = 2
+theme_override_colors/default_color = Color(0.047058824, 0.011764706, 0.05882353, 1)
+theme_override_colors/font_outline_color = Color(1, 0.96862745, 0.8117647, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/normal_font = ExtResource("5_3wy1v")
+bbcode_enabled = true
+text = "[wave]wave 1"
+fit_content = true

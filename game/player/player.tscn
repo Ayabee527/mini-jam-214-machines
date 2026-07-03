@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://3ypspvodxuyh"]
+
+[ext_resource type="Script" uid="uid://chv220puv11jk" path="res://player/player.gd" id="1_g1dw6"]
+[ext_resource type="Texture2D" uid="uid://c3ijeu2i27flc" path="res://assets/textures/player.png" id="1_oul6g"]
+[ext_resource type="Script" uid="uid://4lio7mq7v2gj" path="res://components/states/state_machine.gd" id="2_yw30f"]
+[ext_resource type="Script" uid="uid://b1f5qy6b705bp" path="res://player/states/walk.gd" id="3_yw30f"]
+
+[node name="Player" type="Node2D" unique_id=1785318351 node_paths=PackedStringArray("coll_detect_raycast")]
+script = ExtResource("1_g1dw6")
+coll_detect_raycast = NodePath("CollDetect")
+
+[node name="StateMachine" type="Node" parent="." unique_id=1407208298 node_paths=PackedStringArray("initial_state")]
+script = ExtResource("2_yw30f")
+initial_state = NodePath("Walk")
+metadata/_custom_type_script = "uid://4lio7mq7v2gj"
+
+[node name="Walk" type="Node" parent="StateMachine" unique_id=531130529]
+script = ExtResource("3_yw30f")
+walk_speed = 0.15
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1420673575]
+texture = ExtResource("1_oul6g")
+
+[node name="CollDetect" type="RayCast2D" parent="." unique_id=648064050]
+target_position = Vector2(16, 0)
