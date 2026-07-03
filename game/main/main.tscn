@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://kesqr0gbfe8o" path="res://main/grid.gd" id="1_pjrb6"]
 [ext_resource type="Script" uid="uid://c27kky8jcquci" path="res://main/main.gd" id="1_xwkvk"]
 [ext_resource type="Script" uid="uid://b2tyu5hkv4afc" path="res://main/task_handler.gd" id="3_c651c"]
-[ext_resource type="FontFile" uid="uid://dbhesa6x5wu1j" path="res://assets/fonts/m5x7.ttf" id="5_3wy1v"]
+[ext_resource type="FontFile" uid="uid://css58arp1p17e" path="res://assets/fonts/Not Jam Play 23.ttf" id="5_3wy1v"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_66q6m"]
 draw_center = false
@@ -59,6 +59,7 @@ layout_mode = 2
 position = Vector2(-10, -10)
 
 [node name="Grid" type="Node2D" parent="MarginContainer/PanelContainer/Clip/World" unique_id=718200903]
+visible = false
 script = ExtResource("1_pjrb6")
 offset = Vector2i(9, 9)
 
@@ -106,13 +107,15 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="WaveCount" type="RichTextLabel" parent="UI/MarginContainer" unique_id=1404831565]
+[node name="QuotaCount" type="RichTextLabel" parent="UI/MarginContainer" unique_id=1404831565]
 clip_contents = false
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
 theme_override_colors/default_color = Color(0.047058824, 0.011764706, 0.05882353, 1)
 theme_override_colors/font_outline_color = Color(1, 0.96862745, 0.8117647, 1)
 theme_override_constants/outline_size = 4
 theme_override_fonts/normal_font = ExtResource("5_3wy1v")
 bbcode_enabled = true
-text = "[wave]wave 1"
+text = "[wave]quota 1"
 fit_content = true
