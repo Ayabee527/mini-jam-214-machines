@@ -1,0 +1,82 @@
+[gd_scene format=3 uid="uid://bt4s0gtf3j7n4"]
+
+[ext_resource type="Script" uid="uid://b73qm6gceohbt" path="res://tasks/hub/task_select.gd" id="1_gsxru"]
+[ext_resource type="FontFile" uid="uid://b3w1memles7js" path="res://assets/fonts/PixelMiddle.ttf" id="1_xbg1x"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q4iom"]
+bg_color = Color(0.047058824, 0.011764706, 0.05882353, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dn6q2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b58j8"]
+bg_color = Color(1, 1, 1, 0.2509804)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_66q6m"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(1, 1, 1, 0)
+border_width_bottom = 2
+border_color = Color(1, 0.96862745, 0.8117647, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gsxru"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(1, 1, 1, 0.2509804)
+border_width_bottom = 2
+border_color = Color(0.8425804, 0.7331326, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qaa66"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(1, 1, 1, 0.1254902)
+border_width_bottom = 2
+border_color = Color(0.8982065, 0.7780795, 3.85046e-07, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ti4mm"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(1, 1, 1, 0.2509804)
+border_width_bottom = 2
+border_color = Color(1, 0.96862745, 0.8117647, 1)
+
+[node name="TaskSelect" type="PanelContainer" unique_id=1473958717 node_paths=PackedStringArray("progress_bar", "button")]
+theme_override_styles/panel = SubResource("StyleBoxFlat_q4iom")
+script = ExtResource("1_gsxru")
+progress_bar = NodePath("ProgressBar")
+button = NodePath("Button")
+
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=846041559]
+custom_minimum_size = Vector2(8, 0)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_styles/background = SubResource("StyleBoxEmpty_dn6q2")
+theme_override_styles/fill = SubResource("StyleBoxFlat_b58j8")
+fill_mode = 3
+show_percentage = false
+
+[node name="Button" type="Button" parent="." unique_id=1130186771]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.047058824, 0.011764706, 0.05882353, 1)
+theme_override_colors/font_focus_color = Color(0.047058824, 0.011764706, 0.05882353, 1)
+theme_override_colors/font_pressed_color = Color(0.047058824, 0.011764706, 0.05882353, 1)
+theme_override_colors/font_hover_color = Color(0.047058824, 0.011764706, 0.05882353, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.047058824, 0.011764706, 0.05882353, 1)
+theme_override_colors/font_outline_color = Color(1, 0.96862745, 0.8117647, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("1_xbg1x")
+theme_override_styles/normal = SubResource("StyleBoxFlat_66q6m")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_gsxru")
+theme_override_styles/hover = SubResource("StyleBoxFlat_qaa66")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_ti4mm")
+theme_override_styles/focus = SubResource("StyleBoxFlat_qaa66")
+text = "temp"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

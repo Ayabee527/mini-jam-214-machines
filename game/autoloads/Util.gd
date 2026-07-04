@@ -1,42 +1,23 @@
 extends Node
 
-const GRID_SIZE: int = 14
-const GRID_BOUNDS: Rect2i = Rect2i(0, 0, GRID_SIZE, GRID_SIZE)
-
-@export var grid_offset: int = 8
-@export var tile_size: int = 16
+const OFFSET: Vector2 = Vector2(16.0, 16.0)
+const CELL_SIZE: int = 16
+const GRID_SIZE: int = 15
 
 var occupied: PackedVector2Array = PackedVector2Array()
 
-func get_closest_in_group(position: Vector2, group: StringName) -> Node2D:
-	var members: Array = get_tree().get_nodes_in_group(group)
-	var eligible: Array[Node2D] = []
-	for member in members:
-		if member is Node2D:
-			eligible.append(member)
-	
-	var closest_candidate: Node2D = eligible[0]
-	var closest_dist: float = INF
-	for candidate in eligible:
-		var dist = position.distance_squared_to(candidate.global_position)
-		if dist < closest_dist:
-			closest_dist = dist
-			closest_candidate = candidate
-	
-	return closest_candidate
-
 func get_global_from_tile_position(pos: Vector2i, centered: bool = true) -> Vector2:
-	var new_pos: Vector2 = Vector2(pos * tile_size) + (Vector2.ONE * grid_offset)
+	var new_pos: Vector2 = Vector2(pos * CELL_SIZE) + (Vector2.ONE * OFFSET)
 	if centered:
-		new_pos += Vector2.ONE * tile_size / 2
+		new_pos += Vector2.ONE * CELL_SIZE / 2
 	new_pos += Vector2.ONE
 	return new_pos
 
 func get_tile_from_global_position(pos: Vector2, centered: bool = true) -> Vector2:
-	var new_pos: Vector2 = pos - (Vector2.ONE * grid_offset)
+	var new_pos: Vector2 = pos - (Vector2.ONE * OFFSET)
 	if centered:
-		new_pos -= Vector2.ONE * tile_size * 0.5
-	new_pos /= tile_size
+		new_pos -= Vector2.ONE * CELL_SIZE * 0.5
+	new_pos /= CELL_SIZE
 	return new_pos
 
 func occupy_tile(tile_pos: Vector2) -> void:

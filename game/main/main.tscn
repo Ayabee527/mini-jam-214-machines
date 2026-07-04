@@ -1,10 +1,7 @@
 [gd_scene format=3 uid="uid://ctwiy6ybikp7r"]
 
-[ext_resource type="PackedScene" uid="uid://3ypspvodxuyh" path="res://player/player.tscn" id="1_53q0u"]
-[ext_resource type="Script" uid="uid://kesqr0gbfe8o" path="res://main/grid.gd" id="1_pjrb6"]
 [ext_resource type="Script" uid="uid://c27kky8jcquci" path="res://main/main.gd" id="1_xwkvk"]
-[ext_resource type="Script" uid="uid://b2tyu5hkv4afc" path="res://main/task_handler.gd" id="3_c651c"]
-[ext_resource type="FontFile" uid="uid://css58arp1p17e" path="res://assets/fonts/Not Jam Play 23.ttf" id="5_3wy1v"]
+[ext_resource type="PackedScene" uid="uid://bnjlfdnxiqox3" path="res://tasks/hub/task_hub.tscn" id="2_pjrb6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_66q6m"]
 draw_center = false
@@ -28,7 +25,10 @@ normal = Vector2(0, 1)
 [node name="Main" type="Node2D" unique_id=193899890]
 script = ExtResource("1_xwkvk")
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=1489437146]
+[node name="BG" type="CanvasLayer" parent="." unique_id=416663139]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="BG" unique_id=1489437146]
 custom_minimum_size = Vector2(320, 320)
 custom_maximum_size = Vector2(320, 320)
 offset_left = -32.0
@@ -37,15 +37,26 @@ offset_right = 288.0
 offset_bottom = 288.0
 color = Color(0.047058824, 0.011764706, 0.05882353, 1)
 
+[node name="MarginContainer" type="MarginContainer" parent="BG" unique_id=1977783304]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1941495587]
 custom_minimum_size = Vector2(256, 256)
 custom_maximum_size = Vector2(256, 256)
 offset_right = 40.0
 offset_bottom = 40.0
-theme_override_constants/margin_left = 7
-theme_override_constants/margin_top = 7
-theme_override_constants/margin_right = 7
-theme_override_constants/margin_bottom = 7
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer" unique_id=366160691]
 layout_mode = 2
@@ -56,66 +67,32 @@ clip_contents = true
 layout_mode = 2
 
 [node name="World" type="Node2D" parent="MarginContainer/PanelContainer/Clip" unique_id=60600431]
-position = Vector2(-10, -10)
-
-[node name="Grid" type="Node2D" parent="MarginContainer/PanelContainer/Clip/World" unique_id=718200903]
-visible = false
-script = ExtResource("1_pjrb6")
-offset = Vector2i(9, 9)
+position = Vector2(-17, -17)
 
 [node name="Walls" type="Node2D" parent="MarginContainer/PanelContainer/Clip/World" unique_id=362660554]
 
 [node name="WallL" type="StaticBody2D" parent="MarginContainer/PanelContainer/Clip/World/Walls" unique_id=130322810]
-position = Vector2(10, 128)
+position = Vector2(17, 128)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MarginContainer/PanelContainer/Clip/World/Walls/WallL" unique_id=1327049253]
 shape = SubResource("WorldBoundaryShape2D_66q6m")
 
 [node name="WallR" type="StaticBody2D" parent="MarginContainer/PanelContainer/Clip/World/Walls" unique_id=1764779011]
-position = Vector2(250, 128)
+position = Vector2(239, 128)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MarginContainer/PanelContainer/Clip/World/Walls/WallR" unique_id=1849439302]
 shape = SubResource("WorldBoundaryShape2D_q4iom")
 
 [node name="WallU" type="StaticBody2D" parent="MarginContainer/PanelContainer/Clip/World/Walls" unique_id=796133034]
-position = Vector2(128, 10)
+position = Vector2(128, 17)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MarginContainer/PanelContainer/Clip/World/Walls/WallU" unique_id=1219568519]
 shape = SubResource("WorldBoundaryShape2D_4hihk")
 
 [node name="WallD" type="StaticBody2D" parent="MarginContainer/PanelContainer/Clip/World/Walls" unique_id=316780417]
-position = Vector2(128, 250)
+position = Vector2(128, 239)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MarginContainer/PanelContainer/Clip/World/Walls/WallD" unique_id=1689221744]
 shape = SubResource("WorldBoundaryShape2D_53q0u")
 
-[node name="TaskHandler" type="Node2D" parent="MarginContainer/PanelContainer/Clip/World" unique_id=590767264]
-script = ExtResource("3_c651c")
-
-[node name="Player" parent="MarginContainer/PanelContainer/Clip/World" unique_id=522129304 instance=ExtResource("1_53q0u")]
-position = Vector2(129, 129)
-
-[node name="UI" type="CanvasLayer" parent="." unique_id=2108685963]
-
-[node name="MarginContainer" type="MarginContainer" parent="UI" unique_id=191245642]
-custom_minimum_size = Vector2(256, 256)
-custom_maximum_size = Vector2(256, 256)
-offset_right = 40.0
-offset_bottom = 40.0
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
-
-[node name="QuotaCount" type="RichTextLabel" parent="UI/MarginContainer" unique_id=1404831565]
-clip_contents = false
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 8
-theme_override_colors/default_color = Color(0.047058824, 0.011764706, 0.05882353, 1)
-theme_override_colors/font_outline_color = Color(1, 0.96862745, 0.8117647, 1)
-theme_override_constants/outline_size = 4
-theme_override_fonts/normal_font = ExtResource("5_3wy1v")
-bbcode_enabled = true
-text = "[wave]quota 1"
-fit_content = true
+[node name="TaskHub" parent="MarginContainer/PanelContainer/Clip/World" unique_id=1498745780 instance=ExtResource("2_pjrb6")]

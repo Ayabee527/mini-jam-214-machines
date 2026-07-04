@@ -65,11 +65,11 @@ _data = {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kr2sd"]
 shader = ExtResource("3_aoibc")
-shader_parameter/overlay = false
+shader_parameter/overlay = true
 shader_parameter/scanlines_opacity = 0.2
 shader_parameter/scanlines_width = 0.15
 shader_parameter/grille_opacity = 0.3
-shader_parameter/resolution = Vector2(64, 64)
+shader_parameter/resolution = Vector2(128, 128)
 shader_parameter/pixelate = false
 shader_parameter/roll = true
 shader_parameter/roll_speed = 0.3
@@ -79,10 +79,10 @@ shader_parameter/distort_intensity = 0.02
 shader_parameter/noise_opacity = 0.1
 shader_parameter/noise_speed = 5.0
 shader_parameter/static_noise_intensity = 0.03
-shader_parameter/aberration = 0.010000047974999982
+shader_parameter/aberration = 0.01000004797499998
 shader_parameter/brightness = 2.0
 shader_parameter/discolor = false
-shader_parameter/warp_amount = 0.50000002375
+shader_parameter/warp_amount = 0.10000000475
 shader_parameter/clip_warp = false
 shader_parameter/vignette_intensity = 0.4
 shader_parameter/vignette_opacity = 0.5

@@ -1,0 +1,71 @@
+[gd_scene format=3 uid="uid://bnjlfdnxiqox3"]
+
+[ext_resource type="FontFile" uid="uid://beg6m70dt6qd8" path="res://assets/fonts/PixelHigh.ttf" id="1_r8t84"]
+[ext_resource type="PackedScene" uid="uid://bt4s0gtf3j7n4" path="res://tasks/hub/task_select.tscn" id="2_r8t84"]
+
+[node name="TaskHub" type="Node2D" unique_id=1498745780]
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2140583692]
+custom_minimum_size = Vector2(256, 256)
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=2074362158]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TaskHub" type="RichTextLabel" parent="MarginContainer/VBoxContainer" unique_id=1559600890]
+clip_contents = false
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_colors/default_color = Color(0.047058824, 0.011764706, 0.05882353, 1)
+theme_override_colors/font_outline_color = Color(1, 0.96862745, 0.8117647, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/normal_font = ExtResource("1_r8t84")
+bbcode_enabled = true
+text = "[wave]watch your tasks!"
+fit_content = true
+autowrap_mode = 0
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/VBoxContainer" unique_id=252139978]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 8
+columns = 2
+
+[node name="Temperature" parent="MarginContainer/VBoxContainer/GridContainer" unique_id=1473958717 instance=ExtResource("2_r8t84")]
+layout_mode = 2
+
+[node name="Calibrate" parent="MarginContainer/VBoxContainer/GridContainer" unique_id=630389816 instance=ExtResource("2_r8t84")]
+layout_mode = 2
+task_name = "calibrate"
+
+[node name="Tune" parent="MarginContainer/VBoxContainer/GridContainer" unique_id=417411705 instance=ExtResource("2_r8t84")]
+layout_mode = 2
+task_name = "tune"
+
+[node name="Process" parent="MarginContainer/VBoxContainer/GridContainer" unique_id=1773198417 instance=ExtResource("2_r8t84")]
+layout_mode = 2
+task_name = "process"
+
+[node name="Maintain" parent="MarginContainer/VBoxContainer/GridContainer" unique_id=521894491 instance=ExtResource("2_r8t84")]
+layout_mode = 2
+task_name = "maintain"
+
+[node name="Clean" parent="MarginContainer/VBoxContainer/GridContainer" unique_id=94238177 instance=ExtResource("2_r8t84")]
+layout_mode = 2
+task_name = "clean"
+
+[node name="Clock" parent="MarginContainer/VBoxContainer/GridContainer" unique_id=335116299 instance=ExtResource("2_r8t84")]
+layout_mode = 2
+task_name = "clock"
+
+[node name="Defend" parent="MarginContainer/VBoxContainer/GridContainer" unique_id=1545421131 instance=ExtResource("2_r8t84")]
+layout_mode = 2
+task_name = "defend"
