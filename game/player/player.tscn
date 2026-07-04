@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://c60yjjbgk0m1"]
+
+[ext_resource type="Script" uid="uid://8mlmgav1y0ac" path="res://player/player.gd" id="1_g1dw6"]
+[ext_resource type="Texture2D" uid="uid://c3ijeu2i27flc" path="res://assets/textures/player.png" id="1_oul6g"]
+
+[node name="Player" type="Node2D" unique_id=62953710 node_paths=PackedStringArray("coll_detect_raycast", "sprite")]
+script = ExtResource("1_g1dw6")
+walk_speed = 0.2
+coll_detect_raycast = NodePath("RayCast2D")
+sprite = NodePath("Sprite2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1377953220]
+texture = ExtResource("1_oul6g")
+
+[node name="RayCast2D" type="RayCast2D" parent="." unique_id=626149345]
+target_position = Vector2(16, 0)

@@ -37,7 +37,7 @@ folder_colors={
 "res://assets/": "purple",
 "res://autoloads/": "gray",
 "res://components/": "yellow",
-"res://tasks/": "red"
+"res://player/": "teal"
 }
 
 [input]
