@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://wpwy2uim5ugv"]
+
+[ext_resource type="Script" uid="uid://dcot2cfu0es2a" path="res://dial/dial.gd" id="1_53q0u"]
+
+[node name="Main" type="Node2D" unique_id=1775691758]
+
+[node name="BG" type="CanvasLayer" parent="." unique_id=996893275]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="BG" unique_id=161908828]
+custom_minimum_size = Vector2(320, 180)
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0, 0, 0, 1)
+
+[node name="Dial" type="Node2D" parent="." unique_id=1089418009]
+position = Vector2(160, 90)
+script = ExtResource("1_53q0u")
+stun_time = 0.5

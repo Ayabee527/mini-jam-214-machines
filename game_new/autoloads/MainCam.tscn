@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://m4bxq21jlbtc"]
+
+[ext_resource type="Script" uid="uid://dulajadete0p8" path="res://autoloads/MainCam.gd" id="1_ubem2"]
+
+[node name="MainCam" type="Camera2D" unique_id=1219812914 node_paths=PackedStringArray("flash_rect")]
+ignore_rotation = false
+limit_left = 0
+limit_top = 0
+limit_right = 320
+limit_bottom = 180
+limit_smoothed = true
+position_smoothing_enabled = true
+position_smoothing_speed = 8.0
+rotation_smoothing_enabled = true
+script = ExtResource("1_ubem2")
+flash_rect = NodePath("CanvasLayer/Flash")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=836002677]
+layer = 90
+
+[node name="Flash" type="ColorRect" parent="CanvasLayer" unique_id=1743982953]
+modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(320, 180)
+offset_right = 320.0
+offset_bottom = 180.0
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
