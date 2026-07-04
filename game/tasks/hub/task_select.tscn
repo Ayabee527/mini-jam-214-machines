@@ -47,6 +47,18 @@ bg_color = Color(1, 1, 1, 0.2509804)
 border_width_bottom = 2
 border_color = Color(1, 0.96862745, 0.8117647, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0gjhi"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.22566202, 0, 0.03917647, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0, 0, 1)
+
 [node name="TaskSelect" type="PanelContainer" unique_id=1473958717 node_paths=PackedStringArray("progress_bar", "button")]
 theme_override_styles/panel = SubResource("StyleBoxFlat_q4iom")
 script = ExtResource("1_gsxru")
@@ -69,6 +81,7 @@ theme_override_colors/font_focus_color = Color(0.047058824, 0.011764706, 0.05882
 theme_override_colors/font_pressed_color = Color(0.047058824, 0.011764706, 0.05882353, 1)
 theme_override_colors/font_hover_color = Color(0.047058824, 0.011764706, 0.05882353, 1)
 theme_override_colors/font_hover_pressed_color = Color(0.047058824, 0.011764706, 0.05882353, 1)
+theme_override_colors/font_disabled_color = Color(0.047058824, 0.011764706, 0.05882353, 1)
 theme_override_colors/font_outline_color = Color(1, 0.96862745, 0.8117647, 1)
 theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("1_xbg1x")
@@ -76,6 +89,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_66q6m")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_gsxru")
 theme_override_styles/hover = SubResource("StyleBoxFlat_qaa66")
 theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_ti4mm")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_0gjhi")
 theme_override_styles/focus = SubResource("StyleBoxFlat_qaa66")
 text = "temp"
 

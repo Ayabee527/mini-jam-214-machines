@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c27kky8jcquci" path="res://main/main.gd" id="1_xwkvk"]
 [ext_resource type="PackedScene" uid="uid://bnjlfdnxiqox3" path="res://tasks/hub/task_hub.tscn" id="2_pjrb6"]
+[ext_resource type="PackedScene" uid="uid://cov47c0etauq7" path="res://tasks/temperature/task_temp.tscn" id="3_xwkvk"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_66q6m"]
 draw_center = false
@@ -96,3 +97,6 @@ position = Vector2(128, 239)
 shape = SubResource("WorldBoundaryShape2D_53q0u")
 
 [node name="TaskHub" parent="MarginContainer/PanelContainer/Clip/World" unique_id=1498745780 instance=ExtResource("2_pjrb6")]
+visible = false
+
+[node name="TaskTemp" parent="MarginContainer/PanelContainer/Clip/World" unique_id=773428833 instance=ExtResource("3_xwkvk")]
