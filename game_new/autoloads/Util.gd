@@ -1,56 +1,75 @@
 extends Node
 
-const OFFSET: Vector2 = Vector2(16.0, 16.0)
-const CELL_SIZE: int = 16
-const GRID_SIZE: int = 15
+func slice_to_range(center: float, width: float) -> Vector2:
+	var sweep: float = width * TAU
+	var min_a: float = fposmod(center - (sweep / 2.0), TAU)
+	return Vector2(
+		min_a,
+		min_a + sweep
+	)
 
-var occupied: PackedVector2Array = PackedVector2Array()
-
-func get_global_from_tile_position(pos: Vector2i, centered: bool = true) -> Vector2:
-	var new_pos: Vector2 = Vector2(pos * CELL_SIZE) + (Vector2.ONE * OFFSET)
-	if centered:
-		new_pos += Vector2.ONE * CELL_SIZE / 2
-	new_pos += Vector2.ONE
-	return new_pos
-
-func get_tile_from_global_position(pos: Vector2, centered: bool = true) -> Vector2:
-	var new_pos: Vector2 = pos - (Vector2.ONE * OFFSET)
-	if centered:
-		new_pos -= Vector2.ONE * CELL_SIZE * 0.5
-	new_pos /= CELL_SIZE
-	return new_pos
-
-func occupy_tile(tile_pos: Vector2) -> void:
-	if not occupied.has(tile_pos):
-		occupied.append(tile_pos)
-
-func unoccupy_tile(tile_pos: Vector2) -> void:
-	if occupied.has(tile_pos):
-		occupied.erase(tile_pos)
-
-func get_random_occupied_tile() -> Vector2:
-	if occupied.size() > 0:
-		return occupied[randi() % occupied.size()]
-	else:
-		return Vector2.INF
-
-func get_random_unoccupied_tile() -> Vector2:
-	var total_slots = (GRID_SIZE + 1) ** 2
-	var available_indices: PackedInt32Array = PackedInt32Array()
+func get_occupied_ranges(slices: Dictionary[float, float]) -> Dictionary:
+	var ranges: Array[Vector2] = []
+	for slice: float in slices:
+		var range: Vector2 = slice_to_range(slice, slices[slice])
+		
+		if range.y > TAU:
+			ranges.append(Vector2(range.x, TAU))
+			ranges.append(Vector2(0.0, range.y - TAU))
+		else:
+			ranges.append(range)
 	
-	var occupied_indices = {}
-	for tile in occupied:
-		var idx = int((tile.y * 15) + tile.x)
-		occupied_indices[idx] = true
+	ranges.sort_custom(
+		func(a, b):
+			return a.x < b.x
+	)
 	
-	for i in range(total_slots):
-		if not occupied_indices.has(i):
-			available_indices.append(i)
+	var merged: Dictionary[float, float] = {}
+	for r: Vector2 in ranges:
+		if merged.is_empty():
+			merged[r.x] = r.y
+		else:
+			var last_key = merged.keys().back()
+			var last = Vector2(last_key, merged[last_key])
+			if r.x < last.y:
+				last.y = max(last.y, r.y)
+			else:
+				merged[r.x] = r.y
 	
-	if available_indices.is_empty():
-		return Vector2(-1, -1)
+	return merged
+
+func get_random_unoccupied_angle(occupied_slices: Dictionary[float, float], required_width: float) -> float:
+	var required_sweep: float = required_width * TAU
+	var occupied_ranges = get_occupied_ranges(occupied_slices)
 	
-	var choice = available_indices[randi() % available_indices.size()]
-	var x = choice % 15
-	var y = choice / 15
-	return Vector2(x, y)
+	var empty_ranges: Array[Vector2] = []
+	var current_angle: float = 0.0
+	
+	for rm in occupied_ranges:
+		if rm > current_angle:
+			empty_ranges.append(Vector2(current_angle, rm))
+		current_angle = max(current_angle, occupied_ranges[rm])
+	
+	if current_angle < TAU:
+		empty_ranges.append(Vector2(current_angle, TAU))
+	
+	if empty_ranges.size() > 1 and empty_ranges.front().x == 0.0 and empty_ranges.back().y == TAU:
+		var first = empty_ranges.pop_front()
+		var last = empty_ranges.pop_back()
+		empty_ranges.append(Vector2(last.x, TAU + first.y))
+	
+	var valid_gaps: Array[Vector2] = []
+	for gap in empty_ranges:
+		var gap_width = gap.y - gap.x
+		if gap_width >= required_sweep:
+			valid_gaps.append(gap)
+	
+	if valid_gaps.is_empty():
+		return INF
+	
+	var chosen_gap = valid_gaps.pick_random()
+	var max_start: float = chosen_gap.y - required_sweep
+	var chosen_start: float = randf_range(chosen_gap.x, max_start)
+	
+	return fposmod(chosen_start + (required_sweep / 2.0), TAU)
+	

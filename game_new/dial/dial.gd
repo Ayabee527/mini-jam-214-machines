@@ -204,5 +204,5 @@ func confirm_cursor() -> void:
 		).from(Color.GREEN)
 		
 		gauge_confirmed.emit(confirmed_gauge.id)
-		state.remove_gauge(confirmed_gauge)
+		confirmed_gauge.kill(0.1)
 		MainCam.shake(10, 5, 5)

@@ -21,6 +21,7 @@ config/icon="res://icon.svg"
 GameManager="*uid://bqo25wudu1jo5"
 MainCam="*uid://m4bxq21jlbtc"
 SceneSwitcher="*uid://brk2fcu5udsgg"
+Util="*uid://m8n22kqamy8h"
 
 [display]
 

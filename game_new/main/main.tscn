@@ -2,7 +2,9 @@
 
 [ext_resource type="Script" uid="uid://dcot2cfu0es2a" path="res://dial/dial.gd" id="1_53q0u"]
 [ext_resource type="Script" uid="uid://nccet2uesjbh" path="res://main/main.gd" id="1_pjrb6"]
+[ext_resource type="AudioStream" uid="uid://snatwdhhpid8" path="res://assets/music/level-intro.ogg" id="2_73k8k"]
 [ext_resource type="FontFile" uid="uid://cjohmkr4cwqfc" path="res://assets/fonts/friendlyscribbles.ttf" id="2_xwkvk"]
+[ext_resource type="AudioStream" uid="uid://b62mmlecobii" path="res://assets/music/level-loop.ogg" id="3_5xyti"]
 [ext_resource type="Script" uid="uid://d15dyf3agggex" path="res://main/machine_handler.gd" id="4_c651c"]
 [ext_resource type="PackedScene" uid="uid://6gf01moesvyi" path="res://machines/machine_dial/machine_dial.tscn" id="5_3wy1v"]
 [ext_resource type="Texture2D" uid="uid://ckmwnyphcp10" path="res://assets/textures/heat.png" id="6_4dugh"]
@@ -13,15 +15,30 @@
 [ext_resource type="Texture2D" uid="uid://qyc310pccmln" path="res://assets/textures/signal.png" id="11_bsumw"]
 [ext_resource type="Texture2D" uid="uid://coolrvbyvtgbb" path="res://assets/textures/radiation.png" id="12_fwcvl"]
 
+[sub_resource type="AudioStreamInteractive" id="AudioStreamInteractive_66q6m"]
+clip_count = 2
+clip_0/name = &"Level Intro"
+clip_0/stream = ExtResource("2_73k8k")
+clip_0/auto_advance = 1
+clip_0/next_clip = 1
+clip_1/name = &"Level Loop"
+clip_1/stream = ExtResource("3_5xyti")
+clip_1/auto_advance = 0
+
 [sub_resource type="Gradient" id="Gradient_fx04y"]
 offsets = PackedFloat32Array(0, 0.24637681, 0.4830918, 0.74396133, 1)
 colors = PackedColorArray(0, 1, 1, 1, 0.1899359, 0.8613992, 0.55701137, 1, 0.36122355, 0.57002586, 1.92523e-07, 1, 0.84146434, 0.29566562, 0, 1, 1, 0, 0, 1)
 
-[node name="Main" type="Node2D" unique_id=1775691758 node_paths=PackedStringArray("dial", "machine_handler", "bg_color")]
+[node name="Main" type="Node2D" unique_id=1775691758 node_paths=PackedStringArray("dial", "machine_handler", "bg_color", "level_music")]
 script = ExtResource("1_pjrb6")
 dial = NodePath("Dial")
 machine_handler = NodePath("MachineHandler")
 bg_color = NodePath("BG/BGColor")
+level_music = NodePath("LevelMusic")
+
+[node name="LevelMusic" type="AudioStreamPlayer" parent="." unique_id=433686484]
+stream = SubResource("AudioStreamInteractive_66q6m")
+bus = &"music"
 
 [node name="BG" type="CanvasLayer" parent="." unique_id=996893275]
 layer = -1
@@ -62,7 +79,7 @@ script = ExtResource("1_53q0u")
 stun_time = 0.5
 radius = 50.0
 
-[node name="MachineHandler" type="Node2D" parent="." unique_id=1883796819 node_paths=PackedStringArray("heat_timer", "pressure_timer", "power_timer", "clock_timer", "signal_timer", "radiation_timer")]
+[node name="MachineHandler" type="Node2D" parent="." unique_id=1883796819 node_paths=PackedStringArray("heat_timer", "pressure_timer", "power_timer", "clock_timer", "signal_timer", "radiation_timer", "queue_timer")]
 position = Vector2(160, 90)
 script = ExtResource("4_c651c")
 heat_timer = NodePath("HeatTimer")
@@ -71,6 +88,7 @@ power_timer = NodePath("PowerTimer")
 clock_timer = NodePath("ClockTimer")
 signal_timer = NodePath("SignalTimer")
 radiation_timer = NodePath("RadiationTimer")
+queue_timer = NodePath("QueueTimer")
 
 [node name="HeatTimer" type="Timer" parent="MachineHandler" unique_id=482856802]
 wait_time = 6.0
@@ -84,6 +102,11 @@ wait_time = 6.0
 [node name="SignalTimer" type="Timer" parent="MachineHandler" unique_id=2090585182]
 
 [node name="RadiationTimer" type="Timer" parent="MachineHandler" unique_id=2001299002]
+wait_time = 8.0
+
+[node name="QueueTimer" type="Timer" parent="MachineHandler" unique_id=1836864767]
+wait_time = 10.0
+one_shot = true
 
 [node name="MiniDials" type="Node2D" parent="." unique_id=1829311294]
 
@@ -138,6 +161,7 @@ machine_name = "RADIATION"
 machine_id = 5
 color = Color(0, 0.88235295, 0.30588236, 1)
 font_size = 12
+shake_on_empty = false
 icon = ExtResource("12_fwcvl")
 font = ExtResource("7_4dugh")
 
@@ -146,3 +170,8 @@ font = ExtResource("7_4dugh")
 [connection signal="gauge_confirmed" from="Dial" to="MachineHandler" method="_on_dial_gauge_confirmed"]
 [connection signal="timeout" from="MachineHandler/HeatTimer" to="MachineHandler" method="_on_heat_timer_timeout"]
 [connection signal="timeout" from="MachineHandler/PressureTimer" to="MachineHandler" method="_on_pressure_timer_timeout"]
+[connection signal="timeout" from="MachineHandler/PowerTimer" to="MachineHandler" method="_on_power_timer_timeout"]
+[connection signal="timeout" from="MachineHandler/ClockTimer" to="MachineHandler" method="_on_clock_timer_timeout"]
+[connection signal="timeout" from="MachineHandler/SignalTimer" to="MachineHandler" method="_on_signal_timer_timeout"]
+[connection signal="timeout" from="MachineHandler/RadiationTimer" to="MachineHandler" method="_on_radiation_timer_timeout"]
+[connection signal="timeout" from="MachineHandler/QueueTimer" to="MachineHandler" method="_on_queue_timer_timeout"]

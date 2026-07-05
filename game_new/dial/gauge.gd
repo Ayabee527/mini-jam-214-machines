@@ -26,6 +26,11 @@ func initialize() -> void:
 	life_left = lifetime
 	initialized.emit()
 
+func kill(kill_time: float = 0.25) -> void:
+	var life_frac = life_left / lifetime
+	life_left = kill_time
+	lifetime = life_left / life_frac
+
 func overlapping_ranges(left: float, right: float) -> bool:
 	var self_left: float = cur_angle - (cur_width * TAU / 2.0)
 	var self_right: float = cur_angle + (cur_width * TAU / 2.0)

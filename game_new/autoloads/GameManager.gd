@@ -9,6 +9,7 @@ signal machine_broke(machine: Machines)
 enum GaugeID {
 	START_GAME,
 	TOGGLE_HEAT,
+	REDUCE_RADIATION,
 }
 
 enum Machines {
@@ -57,6 +58,9 @@ func add_machine(machine: Machines) -> void:
 		match machine:
 			Machines.HEAT:
 				data.status_change_rate = -0.025
+			Machines.RADIATION:
+				data.status = 0
+				data.status_change_rate = -0.075
 		
 		datas[machine] = data
 		machine_added.emit(machine)

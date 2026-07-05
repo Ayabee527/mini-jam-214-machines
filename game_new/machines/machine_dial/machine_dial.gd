@@ -15,6 +15,8 @@ const MAX_SHAKE_AMOUNT: float = 6.0
 @export var end_angle: float = 300.0
 @export var font_size: int = 8
 @export var font_offset: Vector2 = Vector2(0, 24)
+@export var shake_on_empty: bool = true
+@export var shake_on_full: bool = true
 
 @export var icon: Texture2D
 @export var font: Font
@@ -126,7 +128,12 @@ func reshake() -> void:
 	var power: int = 2
 	if machine_data:
 		if not machine_data.broken:
-			shake_amount = pow(2, 2 * power) * MAX_SHAKE_AMOUNT * pow(machine_data.status - 0.5, 2 * power)
+			if shake_on_empty and shake_on_full:
+				shake_amount = pow(2, 2 * power) * MAX_SHAKE_AMOUNT * pow(machine_data.status - 0.5, 2 * power)
+			elif shake_on_empty and not shake_on_full:
+				shake_amount = 1 - pow(machine_data.status, 2 * power)
+			elif shake_on_full and not shake_on_empty:
+				shake_amount = pow(machine_data.status, 2 * power)
 	
 	shake_offset = Vector2(
 		randf_range(-shake_amount, shake_amount),

@@ -25,3 +25,11 @@ func add_gauge(gauge: Gauge) -> void:
 
 func remove_gauge(gauge: Gauge) -> void:
 	gauges.erase(gauge)
+
+func get_occupied_slices() -> Dictionary[float, float]:
+	var occupied: Dictionary[float, float] = {}
+	for gauge: Gauge in gauges:
+		var min_a = gauge.cur_angle - (gauge.cur_width * TAU / 2.0)
+		var max_a = gauge.cur_angle + (gauge.cur_width * TAU / 2.0)
+		occupied[min_a] = max_a
+	return occupied

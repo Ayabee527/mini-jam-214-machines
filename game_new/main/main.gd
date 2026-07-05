@@ -3,6 +3,7 @@ extends Node2D
 @export var dial: Dial
 @export var machine_handler: MachineHandler
 @export var bg_color: ColorRect
+@export var level_music: AudioStreamPlayer
 
 var dial_state: DialState
 
@@ -28,9 +29,11 @@ func _input(_event: InputEvent) -> void:
 func _on_dial_gauge_confirmed(id: int) -> void:
 	if id == GameManager.GaugeID.START_GAME:
 		print_rich("[color=green][wave]Game Started!")
+		level_music.play()
+		MainCam.min_shake_stength = 1.0
 		MainCam.shake(15.0, 15.0, 15.0)
 		MainCam.flash(Color(1,1,1,0.4), 0.5)
-		GameManager.add_machine(GameManager.Machines.HEAT)
+		GameManager.add_machine(GameManager.Machines.RADIATION)
 		#GameManager.add_machine(
 			#GameManager.get_locked_machines().pick_random()
 		#)
