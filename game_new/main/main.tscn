@@ -13,9 +13,14 @@
 [ext_resource type="Texture2D" uid="uid://qyc310pccmln" path="res://assets/textures/signal.png" id="11_bsumw"]
 [ext_resource type="Texture2D" uid="uid://coolrvbyvtgbb" path="res://assets/textures/radiation.png" id="12_fwcvl"]
 
-[node name="Main" type="Node2D" unique_id=1775691758 node_paths=PackedStringArray("dial", "bg_color")]
+[sub_resource type="Gradient" id="Gradient_fx04y"]
+offsets = PackedFloat32Array(0, 0.24637681, 0.4830918, 0.74396133, 1)
+colors = PackedColorArray(0, 1, 1, 1, 0.1899359, 0.8613992, 0.55701137, 1, 0.36122355, 0.57002586, 1.92523e-07, 1, 0.84146434, 0.29566562, 0, 1, 1, 0, 0, 1)
+
+[node name="Main" type="Node2D" unique_id=1775691758 node_paths=PackedStringArray("dial", "machine_handler", "bg_color")]
 script = ExtResource("1_pjrb6")
 dial = NodePath("Dial")
+machine_handler = NodePath("MachineHandler")
 bg_color = NodePath("BG/BGColor")
 
 [node name="BG" type="CanvasLayer" parent="." unique_id=996893275]
@@ -68,6 +73,7 @@ signal_timer = NodePath("SignalTimer")
 radiation_timer = NodePath("RadiationTimer")
 
 [node name="HeatTimer" type="Timer" parent="MachineHandler" unique_id=482856802]
+wait_time = 6.0
 
 [node name="PressureTimer" type="Timer" parent="MachineHandler" unique_id=881570694]
 
@@ -84,6 +90,7 @@ radiation_timer = NodePath("RadiationTimer")
 [node name="HeatDial" parent="MiniDials" unique_id=1317172179 instance=ExtResource("5_3wy1v")]
 position = Vector2(55, 40)
 machine_name = "HEAT"
+status_gradient = SubResource("Gradient_fx04y")
 color = Color(0.726208, 0.304893, 9.62615e-08, 1)
 font_size = 12
 icon = ExtResource("6_4dugh")
@@ -137,3 +144,5 @@ font = ExtResource("7_4dugh")
 [connection signal="cursor_missed" from="Dial" to="." method="_on_dial_cursor_missed"]
 [connection signal="gauge_confirmed" from="Dial" to="." method="_on_dial_gauge_confirmed"]
 [connection signal="gauge_confirmed" from="Dial" to="MachineHandler" method="_on_dial_gauge_confirmed"]
+[connection signal="timeout" from="MachineHandler/HeatTimer" to="MachineHandler" method="_on_heat_timer_timeout"]
+[connection signal="timeout" from="MachineHandler/PressureTimer" to="MachineHandler" method="_on_pressure_timer_timeout"]

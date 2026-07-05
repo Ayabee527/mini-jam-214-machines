@@ -2,6 +2,9 @@ extends Node
 
 signal machine_added(machine: Machines)
 signal machine_removed(machine: Machines)
+signal machine_emptied(machine: Machines)
+signal machine_filled(machine: Machines)
+signal machine_broke(machine: Machines)
 
 enum GaugeID {
 	START_GAME,
@@ -35,11 +38,41 @@ var colors: Dictionary[Machines, Color] = {
 	Machines.RADIATION: Color(0.0, 0.882, 0.306, 1.0),
 }
 
+func _process(delta: float) -> void:
+	for data: MachineData in datas.values():
+		if data == null:
+			continue
+		if data.broken:
+			continue
+		
+		data.status -= data.status_change_rate * delta
+
 func add_machine(machine: Machines) -> void:
+	if not datas.has(machine):
+		return
+	
 	if datas[machine] == null:
 		var data: MachineData = MachineData.new()
+		
+		match machine:
+			Machines.HEAT:
+				data.status_change_rate = -0.025
+		
 		datas[machine] = data
 		machine_added.emit(machine)
+		
+		data.emptied.connect(
+			func():
+				machine_emptied.emit(machine)
+		)
+		data.filled.connect(
+			func():
+				machine_filled.emit(machine)
+		)
+		data.broke.connect(
+			func():
+				machine_broke.emit(machine)
+		)
 
 func remove_machine(machine: Machines) -> void:
 	if datas[machine] != null:

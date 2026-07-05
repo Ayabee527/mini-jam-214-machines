@@ -1,6 +1,7 @@
 extends Node2D
 
 @export var dial: Dial
+@export var machine_handler: MachineHandler
 @export var bg_color: ColorRect
 
 var dial_state: DialState
@@ -8,6 +9,8 @@ var dial_state: DialState
 func _ready() -> void:
 	dial_state = dial.get_state()
 	add_start_gauge()
+	
+	machine_handler.dial_state = dial_state
 
 func add_start_gauge() -> void:
 	var sg = Gauge.new()

@@ -1,6 +1,8 @@
 class_name Gauge
 extends RefCounted
 
+signal initialized()
+
 var id: GameManager.GaugeID = GameManager.GaugeID.START_GAME
 var icon: Texture2D
 var icon_color: Color
@@ -16,10 +18,13 @@ var life_left: float = 0.0
 var cur_width: float = 0.0
 var cur_angle: float = 0.0
 
+var inited: bool = false
+
 func initialize() -> void:
 	cur_angle = start_angle
-	cur_width = width
+	#cur_width = width
 	life_left = lifetime
+	initialized.emit()
 
 func overlapping_ranges(left: float, right: float) -> bool:
 	var self_left: float = cur_angle - (cur_width * TAU / 2.0)

@@ -31,6 +31,8 @@ func _ready() -> void:
 	MainCam.target = self
 	state = DialState.new()
 	
+	state.gauge_initialized.connect(initialize_gauge)
+	
 	cursor_length = breadth + cursor_sheath
 	cursor_radius = cursor_half_width * TAU / 2.0
 
@@ -113,6 +115,14 @@ func draw_gauges() -> void:
 func get_state() -> DialState:
 	return state
 
+func initialize_gauge(gauge: Gauge) -> void:
+	var tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+	tween.tween_property(
+		gauge, "cur_width", gauge.width, 0.5
+	).from(0)
+	await tween.finished
+	gauge.inited = true
+
 func update_cursor(delta: float) -> void:
 	if not cursor_paused:
 		if clockwise:
@@ -124,6 +134,9 @@ func update_cursor(delta: float) -> void:
 func update_gauges(delta: float) -> void:
 	var expired_gauges: Array[Gauge] = []
 	for gauge: Gauge in state.gauges:
+		if not gauge.inited:
+			continue
+		
 		if gauge.move_period != 0:
 			var a_speed = TAU / gauge.move_period
 			if not gauge.moves_clockwise:

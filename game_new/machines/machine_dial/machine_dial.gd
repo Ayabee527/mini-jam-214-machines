@@ -1,10 +1,11 @@
 class_name MachineDial
 extends Node2D
 
-const MAX_SHAKE_AMOUNT: float = 8.0
+const MAX_SHAKE_AMOUNT: float = 6.0
 
 @export var machine_name: String = ""
 @export var machine_id: GameManager.Machines = GameManager.Machines.HEAT
+@export var status_gradient: Gradient
 @export var radius: float = 16.0
 @export var breadth: float = 4.0
 @export var shadow_offset: Vector2 = Vector2.ONE * 1.0
@@ -30,12 +31,29 @@ func _ready() -> void:
 		func(machine: GameManager.Machines):
 			if machine == machine_id:
 				machine_data = GameManager.get_machine_data(machine)
+				machine_data.broke.connect(
+					func():
+						var t1 = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CIRC)
+						t1.tween_property(
+							self, "shake_amount", MAX_SHAKE_AMOUNT * 0.15, 1.0
+						)
+						var t2 = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
+						t2.set_loops()
+						t2.tween_property(
+							machine_data, "status", 0.0, 1.5
+						)
+						t2.tween_property(
+							machine_data, "status", 1.0, 1.5
+						)
+				)
 	)
 	GameManager.machine_removed.connect(
 		func(machine: GameManager.Machines):
 			if machine == machine_id:
+				shake_amount = 0.0
 				machine_data = null
 	)
+	
 	
 	shake_timer.start()
 
@@ -60,18 +78,27 @@ func _draw() -> void:
 			deg_to_rad(start_angle + progress + angle_offset),
 			64, Color.BLACK, breadth
 		)
+		var col: Color = color
+		if status_gradient:
+			col = status_gradient.sample(machine_data.status)
+		if machine_data.broken:
+			col = Color.DIM_GRAY
 		draw_arc(
 			Vector2.ZERO, radius, deg_to_rad(start_angle + angle_offset),
 			deg_to_rad(start_angle + progress + angle_offset),
-			64, color, breadth
+			64, col,
+			breadth
 		)
 	
 	if icon:
 		draw_texture(
 			icon, center_icon(shadow_offset, icon), Color.BLACK
 		)
+		var col: Color = color
+		if machine_data.broken:
+			col = Color.DIM_GRAY
 		draw_texture(
-			icon, center_icon(Vector2.ZERO, icon), color
+			icon, center_icon(Vector2.ZERO, icon), col
 		)
 	
 	if font:
@@ -80,10 +107,13 @@ func _draw() -> void:
 			machine_name, HORIZONTAL_ALIGNMENT_CENTER, -1,
 			font_size, Color.BLACK
 		)
+		var col: Color = color
+		if machine_data.broken:
+			col = Color.DIM_GRAY
 		draw_string(
 			font, center_string(font_offset, machine_name, font),
 			machine_name, HORIZONTAL_ALIGNMENT_CENTER, -1,
-			font_size, color
+			font_size, col
 		)
 
 func center_icon(pos: Vector2, c_icon: Texture2D) -> Vector2:
@@ -93,19 +123,17 @@ func center_string(pos: Vector2, string: String, c_font: Font) -> Vector2:
 	return pos - (c_font.get_string_size(string, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size) / 2.0)
 
 func reshake() -> void:
-	shake_amount = 0.0
 	var power: int = 2
 	if machine_data:
-		shake_amount = pow(2, 2 * power) * MAX_SHAKE_AMOUNT * pow(machine_data.status - 0.5, 2 * power)
+		if not machine_data.broken:
+			shake_amount = pow(2, 2 * power) * MAX_SHAKE_AMOUNT * pow(machine_data.status - 0.5, 2 * power)
 	
 	shake_offset = Vector2(
 		randf_range(-shake_amount, shake_amount),
 		randf_range(-shake_amount, shake_amount)
 	)
 	
-	shake_timer.start(
-		lerp(1.0, 0.1, shake_amount / MAX_SHAKE_AMOUNT)
-	)
+	shake_timer.start()
 
 func _on_shake_timer_timeout() -> void:
 	reshake()

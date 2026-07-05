@@ -1,6 +1,8 @@
 class_name DialState
 extends RefCounted
 
+signal gauge_initialized(gauge: Gauge)
+
 const MAX_DIAL: float = 100.0
 
 var dial_amount: float = 0.0:
@@ -14,6 +16,10 @@ func set_dial_amount(new_dial_amount: float) -> void:
 	cursor_angle = TAU * (dial_amount / MAX_DIAL)
 
 func add_gauge(gauge: Gauge) -> void:
+	gauge.initialized.connect(
+		func():
+			gauge_initialized.emit(gauge)
+	)
 	gauge.initialize()
 	gauges.append(gauge)
 
