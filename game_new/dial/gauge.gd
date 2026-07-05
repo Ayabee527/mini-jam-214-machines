@@ -2,6 +2,8 @@ class_name Gauge
 extends RefCounted
 
 var id: GameManager.GaugeID = GameManager.GaugeID.START_GAME
+var icon: Texture2D
+var icon_color: Color
 var color: Color = Color.WHITE
 var start_angle: float = 0.0
 var width: float = 0.05

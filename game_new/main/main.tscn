@@ -3,7 +3,15 @@
 [ext_resource type="Script" uid="uid://dcot2cfu0es2a" path="res://dial/dial.gd" id="1_53q0u"]
 [ext_resource type="Script" uid="uid://nccet2uesjbh" path="res://main/main.gd" id="1_pjrb6"]
 [ext_resource type="FontFile" uid="uid://cjohmkr4cwqfc" path="res://assets/fonts/friendlyscribbles.ttf" id="2_xwkvk"]
-[ext_resource type="Script" uid="uid://d15dyf3agggex" path="res://main/component_handler.gd" id="4_c651c"]
+[ext_resource type="Script" uid="uid://d15dyf3agggex" path="res://main/machine_handler.gd" id="4_c651c"]
+[ext_resource type="PackedScene" uid="uid://6gf01moesvyi" path="res://machines/machine_dial/machine_dial.tscn" id="5_3wy1v"]
+[ext_resource type="Texture2D" uid="uid://ckmwnyphcp10" path="res://assets/textures/heat.png" id="6_4dugh"]
+[ext_resource type="FontFile" uid="uid://b3w1memles7js" path="res://assets/fonts/PixelMiddle.ttf" id="7_4dugh"]
+[ext_resource type="Texture2D" uid="uid://dsiua4mya6wf2" path="res://assets/textures/pressure.png" id="8_67ri8"]
+[ext_resource type="Texture2D" uid="uid://c4p16tbjyg6f6" path="res://assets/textures/power.png" id="9_grrlh"]
+[ext_resource type="Texture2D" uid="uid://bsh52tlp1ik67" path="res://assets/textures/clock.png" id="10_0i4oc"]
+[ext_resource type="Texture2D" uid="uid://qyc310pccmln" path="res://assets/textures/signal.png" id="11_bsumw"]
+[ext_resource type="Texture2D" uid="uid://coolrvbyvtgbb" path="res://assets/textures/radiation.png" id="12_fwcvl"]
 
 [node name="Main" type="Node2D" unique_id=1775691758 node_paths=PackedStringArray("dial", "bg_color")]
 script = ExtResource("1_pjrb6")
@@ -17,7 +25,7 @@ layer = -1
 custom_minimum_size = Vector2(320, 180)
 offset_right = 40.0
 offset_bottom = 40.0
-color = Color(0.20392157, 0.15686275, 0.24313726, 1)
+color = Color(0.14117648, 0.16470589, 0.30980393, 1)
 
 [node name="CenterContainer" type="CenterContainer" parent="BG" unique_id=1019083673]
 anchors_preset = 15
@@ -47,10 +55,85 @@ vertical_alignment = 1
 position = Vector2(160, 90)
 script = ExtResource("1_53q0u")
 stun_time = 0.5
+radius = 50.0
 
-[node name="ComponentHandler" type="Node" parent="." unique_id=1083772639]
+[node name="MachineHandler" type="Node2D" parent="." unique_id=1883796819 node_paths=PackedStringArray("heat_timer", "pressure_timer", "power_timer", "clock_timer", "signal_timer", "radiation_timer")]
+position = Vector2(160, 90)
 script = ExtResource("4_c651c")
+heat_timer = NodePath("HeatTimer")
+pressure_timer = NodePath("PressureTimer")
+power_timer = NodePath("PowerTimer")
+clock_timer = NodePath("ClockTimer")
+signal_timer = NodePath("SignalTimer")
+radiation_timer = NodePath("RadiationTimer")
+
+[node name="HeatTimer" type="Timer" parent="MachineHandler" unique_id=482856802]
+
+[node name="PressureTimer" type="Timer" parent="MachineHandler" unique_id=881570694]
+
+[node name="PowerTimer" type="Timer" parent="MachineHandler" unique_id=1258356502]
+
+[node name="ClockTimer" type="Timer" parent="MachineHandler" unique_id=2085609934]
+
+[node name="SignalTimer" type="Timer" parent="MachineHandler" unique_id=2090585182]
+
+[node name="RadiationTimer" type="Timer" parent="MachineHandler" unique_id=2001299002]
+
+[node name="MiniDials" type="Node2D" parent="." unique_id=1829311294]
+
+[node name="HeatDial" parent="MiniDials" unique_id=1317172179 instance=ExtResource("5_3wy1v")]
+position = Vector2(55, 40)
+machine_name = "HEAT"
+color = Color(0.726208, 0.304893, 9.62615e-08, 1)
+font_size = 12
+icon = ExtResource("6_4dugh")
+font = ExtResource("7_4dugh")
+
+[node name="PressureDial" parent="MiniDials" unique_id=209281455 instance=ExtResource("5_3wy1v")]
+position = Vector2(55, 90)
+machine_name = "PRESSURE"
+machine_id = 1
+color = Color(0.5396156, 0.7125094, 0.7588439, 1)
+font_size = 12
+icon = ExtResource("8_67ri8")
+font = ExtResource("7_4dugh")
+
+[node name="PowerDial" parent="MiniDials" unique_id=1439385057 instance=ExtResource("5_3wy1v")]
+position = Vector2(55, 140)
+machine_name = "POWER"
+machine_id = 2
+color = Color(0.82176214, 0.74008936, 0.1774899, 1)
+font_size = 12
+icon = ExtResource("9_grrlh")
+font = ExtResource("7_4dugh")
+
+[node name="ClockDial" parent="MiniDials" unique_id=1863229324 instance=ExtResource("5_3wy1v")]
+position = Vector2(265, 40)
+machine_name = "CLOCK"
+machine_id = 3
+color = Color(0.48902702, 0.45539027, 0.2921141, 1)
+font_size = 12
+icon = ExtResource("10_0i4oc")
+font = ExtResource("7_4dugh")
+
+[node name="SignalDial" parent="MiniDials" unique_id=32697187 instance=ExtResource("5_3wy1v")]
+position = Vector2(265, 90)
+machine_name = "SIGNAL"
+machine_id = 4
+color = Color(0.9932075, 0.25600702, 0.9159728, 1)
+font_size = 12
+icon = ExtResource("11_bsumw")
+font = ExtResource("7_4dugh")
+
+[node name="RadiationDial" parent="MiniDials" unique_id=1891845075 instance=ExtResource("5_3wy1v")]
+position = Vector2(265, 140)
+machine_name = "RADIATION"
+machine_id = 5
+color = Color(0, 0.88235295, 0.30588236, 1)
+font_size = 12
+icon = ExtResource("12_fwcvl")
+font = ExtResource("7_4dugh")
 
 [connection signal="cursor_missed" from="Dial" to="." method="_on_dial_cursor_missed"]
 [connection signal="gauge_confirmed" from="Dial" to="." method="_on_dial_gauge_confirmed"]
-[connection signal="gauge_confirmed" from="Dial" to="ComponentHandler" method="_on_dial_gauge_confirmed"]
+[connection signal="gauge_confirmed" from="Dial" to="MachineHandler" method="_on_dial_gauge_confirmed"]

@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://6gf01moesvyi"]
+
+[ext_resource type="Script" uid="uid://cjdi63hh7hlls" path="res://machines/machine_dial/machine_dial.gd" id="1_tafis"]
+
+[node name="MachineDial" type="Node2D" unique_id=1317172179 node_paths=PackedStringArray("shake_timer")]
+script = ExtResource("1_tafis")
+shake_timer = NodePath("ShakeTimer")
+
+[node name="ShakeTimer" type="Timer" parent="." unique_id=705087179]
+one_shot = true
+
+[connection signal="timeout" from="ShakeTimer" to="." method="_on_shake_timer_timeout"]

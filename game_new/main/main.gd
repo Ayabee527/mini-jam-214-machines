@@ -24,7 +24,13 @@ func _input(_event: InputEvent) -> void:
 
 func _on_dial_gauge_confirmed(id: int) -> void:
 	if id == GameManager.GaugeID.START_GAME:
-		print("game started")
+		print_rich("[color=green][wave]Game Started!")
+		MainCam.shake(15.0, 15.0, 15.0)
+		MainCam.flash(Color(1,1,1,0.4), 0.5)
+		GameManager.add_machine(GameManager.Machines.HEAT)
+		#GameManager.add_machine(
+			#GameManager.get_locked_machines().pick_random()
+		#)
 
 
 func _on_dial_cursor_missed() -> void:

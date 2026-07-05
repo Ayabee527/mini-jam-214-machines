@@ -97,6 +97,18 @@ func draw_gauges() -> void:
 			64, gauge.color,
 			breadth + gauge_sheath
 		)
+		
+		#if gauge.icon:
+			#draw_texture(
+				#gauge.icon,
+				#(Vector2.from_angle(gauge.cur_angle) * (radius + 16.0)) - (gauge.icon.get_size() / 2.0) + shadow_offset,
+				#Color.BLACK
+			#)
+			#draw_texture(
+				#gauge.icon,
+				#(Vector2.from_angle(gauge.cur_angle) * (radius + 16.0)) - (gauge.icon.get_size() / 2.0),
+				#gauge.icon_color
+			#)
 
 func get_state() -> DialState:
 	return state

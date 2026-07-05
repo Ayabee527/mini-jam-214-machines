@@ -39,7 +39,7 @@ folder_colors={
 "res://autoloads/": "gray",
 "res://components/": "yellow",
 "res://dial/": "blue",
-"res://machiners/": "orange"
+"res://machines/": "orange"
 }
 
 [input]
