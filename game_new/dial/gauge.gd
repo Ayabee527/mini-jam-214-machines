@@ -1,7 +1,7 @@
 class_name Gauge
 extends RefCounted
 
-var name: StringName = &""
+var id: GameManager.GaugeID = GameManager.GaugeID.START_GAME
 var color: Color = Color.WHITE
 var start_angle: float = 0.0
 var width: float = 0.05
@@ -22,7 +22,5 @@ func initialize() -> void:
 func overlapping_ranges(left: float, right: float) -> bool:
 	var self_left: float = cur_angle - (cur_width * TAU / 2.0)
 	var self_right: float = cur_angle + (cur_width * TAU / 2.0)
-	
-	prints(left, right, self_left, self_right)
 	
 	return left < self_right and right > self_left

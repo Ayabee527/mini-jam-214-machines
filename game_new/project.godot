@@ -38,7 +38,8 @@ folder_colors={
 "res://assets/": "purple",
 "res://autoloads/": "gray",
 "res://components/": "yellow",
-"res://dial/": "blue"
+"res://dial/": "blue",
+"res://machiners/": "orange"
 }
 
 [input]

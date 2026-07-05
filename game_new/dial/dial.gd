@@ -1,6 +1,9 @@
 class_name Dial
 extends Node2D
 
+signal cursor_missed()
+signal gauge_confirmed(id: GameManager.GaugeID)
+
 @export var clockwise: bool = true
 @export var cursor_paused: bool = false
 @export var period: float = 4.0
@@ -9,13 +12,14 @@ extends Node2D
 @export_group("Graphics")
 @export var radius: float = 60.0
 @export var breadth: float = 4.0
+@export var shadow_offset: Vector2 = Vector2.ONE * 2.0
 @export_subgroup("Gauges", "gauge")
 @export var gauge_sheath: float = 2.0
 @export var gauge_outline: float = 2.0
 @export_subgroup("Cursor", "cursor")
-@export_range(0.0, 0.5, 0.005) var cursor_half_width: float = 0.01
-@export var cursor_sheath: float = 4.0
-@export var cursor_outline: float = 4.0
+@export var cursor_half_width: float = 0.005
+@export var cursor_sheath: float = 8.0
+@export var cursor_outline: float = 2.0
 
 var state: DialState
 
@@ -24,10 +28,11 @@ var cursor_radius: float = 0.01
 var cursor_color: Color = Color.WHITE
 
 func _ready() -> void:
+	MainCam.target = self
 	state = DialState.new()
 	
 	cursor_length = breadth + cursor_sheath
-	cursor_radius = cursor_half_width * TAU
+	cursor_radius = cursor_half_width * TAU / 2.0
 
 func _process(delta: float) -> void:
 	update_cursor(delta)
@@ -43,39 +48,53 @@ func _draw() -> void:
 	# Draws dial ring
 	draw_circle(
 		Vector2.ZERO, radius,
-		Color("191919ff"), false, breadth
+		Color("00000080"), false, breadth
 	)
 	
 	draw_gauges()
 	draw_cursor()
 
 func draw_cursor() -> void:
-	var cursor_outline_radius: float = cursor_radius + (cursor_outline / radius)
 	draw_arc(
 		Vector2.ZERO, radius,
-		state.cursor_angle - (cursor_outline_radius / 2.0), state.cursor_angle + (cursor_outline_radius / 2.0),
-		4, Color.BLACK, cursor_length + cursor_outline
+		state.cursor_angle - cursor_radius - (cursor_outline * 0.5 / radius),
+		state.cursor_angle + cursor_radius + (cursor_outline * 0.5 / radius),
+		16, Color.BLACK, cursor_length + cursor_outline
+	)
+	draw_arc(
+		shadow_offset, radius,
+		state.cursor_angle - cursor_radius - (cursor_outline * 0.5 / radius),
+		state.cursor_angle + cursor_radius + (cursor_outline * 0.5 / radius),
+		16, Color.BLACK, cursor_length
 	)
 	draw_arc(
 		Vector2.ZERO, radius,
-		state.cursor_angle - (cursor_radius / 2.0), state.cursor_angle + (cursor_radius / 2.0),
-		4, cursor_color, cursor_length
+		state.cursor_angle - cursor_radius,
+		state.cursor_angle + cursor_radius,
+		16, cursor_color, cursor_length
 	)
 
 func draw_gauges() -> void:
 	for gauge: Gauge in state.gauges:
 		draw_arc(
 			Vector2.ZERO, radius,
-			gauge.cur_angle - (gauge.cur_width * TAU / 2.0) - (gauge_outline / radius),
-			gauge.cur_angle + (gauge.cur_width * TAU / 2.0) + (gauge_outline / radius),
+			gauge.cur_angle - (gauge.cur_width * TAU / 2.0) - (gauge_outline * 0.5 / radius),
+			gauge.cur_angle + (gauge.cur_width * TAU / 2.0) + (gauge_outline * 0.5 / radius),
 			64, Color.BLACK,
 			breadth + gauge_sheath + gauge_outline
+		)
+		draw_arc(
+			shadow_offset, radius,
+			gauge.cur_angle - (gauge.cur_width * TAU / 2.0) - (gauge_outline * 0.5 / radius),
+			gauge.cur_angle + (gauge.cur_width * TAU / 2.0) + (gauge_outline * 0.5 / radius),
+			64, Color.BLACK,
+			breadth + gauge_sheath
 		)
 		draw_arc(
 			Vector2.ZERO, radius,
 			gauge.cur_angle - (gauge.cur_width * TAU / 2.0),
 			gauge.cur_angle + (gauge.cur_width * TAU / 2.0),
-			max(4, 64 * gauge.cur_width), gauge.color,
+			64, gauge.color,
 			breadth + gauge_sheath
 		)
 
@@ -94,7 +113,7 @@ func update_gauges(delta: float) -> void:
 	var expired_gauges: Array[Gauge] = []
 	for gauge: Gauge in state.gauges:
 		if gauge.move_period != 0:
-			var a_speed = TAU / period
+			var a_speed = TAU / gauge.move_period
 			if not gauge.moves_clockwise:
 				a_speed *= -1
 			gauge.cur_angle += a_speed * delta
@@ -117,7 +136,7 @@ func squish_cursor(squish_factor: float, squish_time: float, inverted: bool = fa
 	var tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 	tween.set_parallel()
 	tween.tween_property(
-		self, "cursor_radius", cursor_half_width * TAU, squish_time
+		self, "cursor_radius", cursor_half_width * TAU / 2.0, squish_time
 	).from(cursor_radius / squish_factor)
 	tween.tween_property(
 		self, "cursor_length", breadth + cursor_sheath, squish_time
@@ -150,9 +169,15 @@ func confirm_cursor() -> void:
 	var confirmed_gauge: Gauge = check_gauged()
 	if confirmed_gauge == null:
 		stun_cursor()
+		MainCam.shake(5, 5, 5)
+		cursor_missed.emit()
 	else:
 		squish_cursor(3.0, stun_time)
 		var tween: Tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CIRC)
 		tween.tween_property(
 			self, "cursor_color", Color.WHITE, stun_time
 		).from(Color.GREEN)
+		
+		gauge_confirmed.emit(confirmed_gauge.id)
+		state.remove_gauge(confirmed_gauge)
+		MainCam.shake(10, 5, 5)

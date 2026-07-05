@@ -2,21 +2,55 @@
 
 [ext_resource type="Script" uid="uid://dcot2cfu0es2a" path="res://dial/dial.gd" id="1_53q0u"]
 [ext_resource type="Script" uid="uid://nccet2uesjbh" path="res://main/main.gd" id="1_pjrb6"]
+[ext_resource type="FontFile" uid="uid://cjohmkr4cwqfc" path="res://assets/fonts/friendlyscribbles.ttf" id="2_xwkvk"]
+[ext_resource type="Script" uid="uid://d15dyf3agggex" path="res://main/component_handler.gd" id="4_c651c"]
 
-[node name="Main" type="Node2D" unique_id=1775691758 node_paths=PackedStringArray("dial")]
+[node name="Main" type="Node2D" unique_id=1775691758 node_paths=PackedStringArray("dial", "bg_color")]
 script = ExtResource("1_pjrb6")
 dial = NodePath("Dial")
+bg_color = NodePath("BG/BGColor")
 
 [node name="BG" type="CanvasLayer" parent="." unique_id=996893275]
 layer = -1
 
-[node name="ColorRect" type="ColorRect" parent="BG" unique_id=161908828]
+[node name="BGColor" type="ColorRect" parent="BG" unique_id=161908828]
 custom_minimum_size = Vector2(320, 180)
 offset_right = 40.0
 offset_bottom = 40.0
-color = Color(0, 0, 0, 1)
+color = Color(0.20392157, 0.15686275, 0.24313726, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="BG" unique_id=1019083673]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Timer" type="RichTextLabel" parent="BG/CenterContainer" unique_id=1432070701]
+visible = false
+clip_contents = false
+layout_mode = 2
+theme_override_colors/default_color = Color(0.20392157, 0.15686275, 0.24313726, 1)
+theme_override_colors/font_outline_color = Color(0.08199944, 0.0570459, 0.10070933, 1)
+theme_override_constants/outline_size = 16
+theme_override_fonts/normal_font = ExtResource("2_xwkvk")
+theme_override_font_sizes/normal_font_size = 32
+bbcode_enabled = true
+text = "[center][shake]30
+"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Dial" type="Node2D" parent="." unique_id=1089418009]
 position = Vector2(160, 90)
 script = ExtResource("1_53q0u")
 stun_time = 0.5
+
+[node name="ComponentHandler" type="Node" parent="." unique_id=1083772639]
+script = ExtResource("4_c651c")
+
+[connection signal="cursor_missed" from="Dial" to="." method="_on_dial_cursor_missed"]
+[connection signal="gauge_confirmed" from="Dial" to="." method="_on_dial_gauge_confirmed"]
+[connection signal="gauge_confirmed" from="Dial" to="ComponentHandler" method="_on_dial_gauge_confirmed"]

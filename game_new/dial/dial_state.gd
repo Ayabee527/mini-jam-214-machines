@@ -14,6 +14,7 @@ func set_dial_amount(new_dial_amount: float) -> void:
 	cursor_angle = TAU * (dial_amount / MAX_DIAL)
 
 func add_gauge(gauge: Gauge) -> void:
+	gauge.initialize()
 	gauges.append(gauge)
 
 func remove_gauge(gauge: Gauge) -> void:
